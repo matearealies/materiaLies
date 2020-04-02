@@ -7,7 +7,7 @@ import Footer from "./footer/Footer";
 import "aos/dist/aos.css";
 import CookieRulesDialog from "./cookies/CookieRulesDialog";
 import CookieConsent from "./cookies/CookieConsent";
-import dummyBlogPosts from "../dummy_data/blogPosts";
+import dummyLevelPosts from "../dummy_data/levelPosts";
 import DialogSelector from "./register_login/DialogSelector";
 import Routing from "./Routing";
 import smoothScrollTop from "../../shared/functions/smoothScrollTop";
@@ -25,15 +25,15 @@ class Main extends PureComponent {
   state = {
     selectedTab: null,
     mobileDrawerOpen: false,
-    blogPosts: [],
+    levelPosts: [],
     dialogOpen: null,
     cookieRulesDialogOpen: false
   };
 
-  blogPostsMaxUnix = Math.round(new Date().getTime() / 1000);
+  levelPostsMaxUnix = Math.round(new Date().getTime() / 1000);
 
   componentDidMount() {
-    this.fetchBlogPosts();
+    this.fetchLevelPosts();
   }
 
   // selectHome = () => {
@@ -43,10 +43,10 @@ class Main extends PureComponent {
   //   this.setState({ selectedTab: "Home" });
   // };
 
-  selectBlog = () => {
+  selectLevel = () => {
     smoothScrollTop();
-    document.title = "WaVer - Blog";
-    this.setState({ selectedTab: "Blog" });
+    document.title = "WaVer - Level";
+    this.setState({ selectedTab: "Level" });
   };
 
   openLoginDialog = () => {
@@ -84,13 +84,13 @@ class Main extends PureComponent {
     this.setState({ dialogOpen: "changePassword" });
   };
 
-  fetchBlogPosts = () => {
+  fetchLevelPosts = () => {
     /**
      * You would fetch this from the server, however we gonna use the example values from state here
      */
-    this.blogPostsMaxUnix = dummyBlogPosts[dummyBlogPosts.length - 1].date;
-    const blogPosts = dummyBlogPosts.map(blogPost => {
-      let title = blogPost.title;
+    this.levelPostsMaxUnix = dummyLevelPosts[dummyLevelPosts.length - 1].date;
+    const levelPosts = dummyLevelPosts.map(levelPost => {
+      let title = levelPost.title;
       title = title.toLowerCase();
       /* Remove unwanted characters, only accept alphanumeric and space */
       title = title.replace(/[^A-Za-z0-9 ]/g, "");
@@ -98,12 +98,12 @@ class Main extends PureComponent {
       title = title.replace(/\s{2,}/g, " ");
       /* Replace space with a '-' symbol */
       title = title.replace(/\s/g, "-");
-      blogPost.url = `/blog/post/${title}`;
-      blogPost.params = `?id=${blogPost.id}`;
-      return blogPost;
+      levelPost.url = `/level/post/${title}`;
+      levelPost.params = `?id=${levelPost.id}`;
+      return levelPost;
     });
     this.setState({
-      blogPosts
+      levelPosts
     });
   };
 
@@ -120,7 +120,7 @@ class Main extends PureComponent {
     const {
       selectedTab,
       mobileDrawerOpen,
-      blogPosts,
+      levelPosts,
       dialogOpen,
       cookieRulesDialogOpen
     } = this.state;
@@ -152,7 +152,7 @@ class Main extends PureComponent {
           handleMobileDrawerOpen={this.handleMobileDrawerOpen}
           handleMobileDrawerClose={this.handleMobileDrawerClose}
         />
-        <Routing blogPosts={blogPosts} selectBlog={this.selectBlog} />
+        <Routing levelPosts={levelPosts} selectLevel={this.selectLevel} />
         <Footer />
       </div>
     );
